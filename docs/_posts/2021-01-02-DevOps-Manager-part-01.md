@@ -2,7 +2,6 @@
 layout: post
 title:  "Unit 1 - OAuth and Azure DevOps REST API"
 date:   2021-01-02 12:04:50 +0200
-categories: Azure DevOps REST OAuth
 ---
 
 ## Introduction to Azure DevOps REST authorization
@@ -342,7 +341,7 @@ Method validates the response and then creates POST request to retrieve _access 
 
 Add break points to _OAuthController_ `Authorize` and `Callback` methods.
 
-![breakpoints](media/breakpoints-to-debug-authorize-and-callback.png)
+![breakpoints](/assets/breakpoints-to-debug-authorize-and-callback.png)
 
 Add `Authorize` link to home view `src\Views\Home\Index.cshtml` and section that renders access and refresh tokens when user has granted access to user's profile details. Furthermore there is a button to `Refresh Token` which calls _OAuth_ controller _RefreshToken_ method.
 
@@ -384,23 +383,23 @@ This will render link to start `Authorize` flow and in if there is already token
 
 Hit F5 key to start debugging and click the `Authorize` link. This will call _OAuthController_ and starts authorization flow for the user.
 
-![home page view](media/home-page-not-authorized.png)
+![home page view](/assets/home-page-not-authorized.png)
 
 Review `authUrl` variable value. Make notice how `state` (guid) is sent as part of query parameters. This guid will be used to validate response in `Callback` when the user grants authorization for the app.
 
 Hit F5 key and user will be redirected to `https://app.vssps.visualstudio.com/oauth2/authorize` for authorization and prompted to accept access to user's profile details. Login to VisualStudio.com with your Azure DevOps credentials when asked.
 
-![user is prompted to grant access](media/grant-access-prompt.png)
+![user is prompted to grant access](/assets/grant-access-prompt.png)
 
 Click `Accept` and `VisualStudio.com` redirects browser back to the application's _OAuthController_ and the breakpoint in the start of the _Callback_ method will be hit. Notice that `VisualStudio.com` sent `state` and authorization `code` as query parameters. State should match the one that was generated when authorize request was sent.
 
-![authorization code](media/auth-response-code.png)
+![authorization code](/assets/auth-response-code.png)
 
 > 💡 TIP! To analyze contents of the code copy the value and decode it using [https://jwt.ms/](https://jwt.ms/) service.
 
 Short lived (~15 minutes) authorization code is used when request for access token is sent to `VisualStudio.com`. Continue debugging - go through validatation steps and review what get sent to `VisualStudio.com` when request for access/refresh tokens are sent. After the access/refresh tokens request returns home view shows access and refresh tokens.
 
-![home after user granted access](media/home-view-user-granted.png)
+![home after user granted access](/assets/home-view-user-granted.png)
 
 Review token anatomy in the [https://jwt.ms/](https://jwt.ms/) service.
 
