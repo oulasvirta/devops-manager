@@ -1,0 +1,31 @@
+﻿<div class="text-center">
+    <a href="~/OAuth/Authorize">Authorize</a>
+</div>
+
+<div>
+    @if(null != ViewBag.Token)
+    {
+        <script>
+            var expiration = @ViewBag.Token.ExpiresIn;
+            var startTime = Math.floor(Date.now() / 1000);
+            var timer = window.setInterval(updateExpiration, 1000);
+            function updateExpiration() {
+                var val = Math.max(0, expiration - (Math.floor(Date.now() / 1000) - startTime));
+                document.getElementById("expiration").value = val;
+                if (val == 0) {
+                    window.clearInterval(timer);
+                }
+            }
+        </script>
+
+        <form method="post" action='@Url.Action("RefreshToken", "OAuth")'>
+            <p>Access token:</p>
+            <textarea rows="6" cols="80" readonly="readonly">@ViewBag.Token.AccessToken</textarea>
+            <p>Refresh token:</p>
+            <textarea rows="6" cols="80" name="refreshToken" readonly="readonly">@ViewBag.Token.RefreshToken</textarea>
+            <p>Expiration (seconds):</p>
+            <input type="text" id="expiration" value="@ViewBag.Token.ExpiresIn" readonly />
+            <p><input type="submit" value="Refresh Token" /></p>
+        </form>
+    }
+</div>
